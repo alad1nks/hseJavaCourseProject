@@ -41,5 +41,5 @@
 * Студент решил распланировать поездку в Москву по делам в другой день (завтра, выходной, будный день)
 * Студент решил провести время в досуговой. Он просматривает ближайшее расписание и забронировал ее на определенное время.
 
-![scheme](https://github.com/alad1nks/hseJavaCourseProject/blob/main/images/diagram.png)
-![scheme](https://github.com/alad1nks/hseJavaCourseProject/blob/main/images/CRC.png)
+![diagram](https://user-images.githubusercontent.com/49027376/225604037-869519e5-c4af-4235-8874-6eaf881cd920.png)
+![CRC](https://user-images.githubusercontent.com/49027376/225604792-0874381b-a4d7-4878-917a-f4c55ca07ec5.png)
