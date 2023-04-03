@@ -1,4 +1,4 @@
-package org.example;
+package org.hse_app;
 
 public class Application {
     public static void main(String[] args) {

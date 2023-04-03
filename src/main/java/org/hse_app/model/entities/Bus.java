@@ -1,4 +1,4 @@
-package org.example.model.entities;
+package org.hse_app.model.entities;
 
 public final class Bus {
     private final String day;

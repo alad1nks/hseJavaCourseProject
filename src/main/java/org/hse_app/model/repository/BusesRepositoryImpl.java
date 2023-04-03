@@ -1,6 +1,7 @@
-package org.example.model.repository;
+package org.hse_app.model.repository;
 
-import org.example.presentation.SchedulePresentation;
+
+import org.hse_app.presentation.SchedulePresentation;
 
 public class BusesRepositoryImpl implements BusesRepository {
     SchedulePresentation schedulePresentation;

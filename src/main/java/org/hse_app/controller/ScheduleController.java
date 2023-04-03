@@ -1,7 +1,8 @@
-package org.example.controller;
+package org.hse_app.controller;
 
-import org.example.model.repository.BusesRepository;
-import org.example.model.repository.BusesRepositoryImpl;
+
+import org.hse_app.model.repository.BusesRepository;
+import org.hse_app.model.repository.BusesRepositoryImpl;
 
 public class ScheduleController {
     String day;

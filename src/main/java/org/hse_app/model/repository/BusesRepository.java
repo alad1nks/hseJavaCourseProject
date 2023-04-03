@@ -1,4 +1,4 @@
-package org.example.model.repository;
+package org.hse_app.model.repository;
 
 
 public interface BusesRepository {
