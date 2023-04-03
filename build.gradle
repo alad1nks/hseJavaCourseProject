@@ -16,6 +16,8 @@ dependencies {
     implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.5')
 
     implementation 'org.springframework.boot:spring-boot-starter'
+
+    implementation 'org.postgresql:postgresql:42.6.0'
 }
 
 test {
