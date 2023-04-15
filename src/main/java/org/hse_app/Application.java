@@ -1,9 +1,7 @@
 package org.hse_app;
 
 import org.hse_app.controller.BusScheduleController;
-import org.hse_app.model.repository.BusScheduleModelImpl;
 import org.hse_app.presentation.BusSchedulePresentation;
-import org.hse_app.presentation.UseCase;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Application {

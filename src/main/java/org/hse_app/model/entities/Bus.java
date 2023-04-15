@@ -1,7 +1,7 @@
 package org.hse_app.model.entities;
 
 public final class Bus {
-    public String getDay() {
+    public int getDay() {
         return day;
     }
 
@@ -25,18 +25,23 @@ public final class Bus {
         return station;
     }
 
-    private final String day;
+    private final int day;
     private final Long dayTime;
     private final String dayTimeString;
     private final String direction;
     private final int id;
     private final String station;
-    public Bus(String day, Long dayTime, String dayTimeString, String direction, int id, String station) {
+    public Bus(int id, int day, Long dayTime, String dayTimeString, String direction, String station) {
+        this.id = id;
         this.day = day;
         this.dayTime = dayTime;
         this.dayTimeString = dayTimeString;
         this.direction = direction;
-        this.id = id;
         this.station = station;
+    }
+
+    @Override
+    public String toString() {
+        return "TODO";
     }
 }

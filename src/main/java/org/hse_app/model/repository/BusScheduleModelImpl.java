@@ -5,24 +5,22 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.observers.DisposableCompletableObserver;
-import org.hse_app.ApplicationContextProvider;
 import org.hse_app.DataBase;
-import org.hse_app.presentation.BusSchedulePresentation;
-import org.hse_app.presentation.UseCase;
-import org.springframework.context.annotation.Lazy;
+import org.hse_app.model.entities.Bus;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BusScheduleModelImpl implements BusScheduleModel {
-    private UseCase useCase;
     private DataBase dataBase;
-    private Observer<ArrayList<String>> onRequestShedule;
+    private final Observer<ArrayList<String>> onRequestSchedule;
+    private final Observable<List<Bus>> busesResponse;
+
     public BusScheduleModelImpl() {
-        useCase = ApplicationContextProvider.getApplicationContext().getBean("UseCaseSingleton", UseCase.class);
-        onRequestShedule = new Observer<ArrayList<String>>() {
+        List<Bus> hardcodedBuses = new ArrayList<>();
+        hardcodedBuses.add(new Bus(0, 0, 22222L, "08:30", "msk", "odn"));
+        busesResponse = Observable.just(hardcodedBuses); // hardcoded list
+        onRequestSchedule = new Observer<>() {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -46,8 +44,8 @@ public class BusScheduleModelImpl implements BusScheduleModel {
         };
     }
 
-    public Observer<ArrayList<String>> getOnRequestShedule() {
-        return onRequestShedule;
+    public Observer<ArrayList<String>> getOnRequestSchedule() {
+        return onRequestSchedule;
     }
 
     @Override
@@ -63,5 +61,10 @@ public class BusScheduleModelImpl implements BusScheduleModel {
     @Override
     public void refreshSchedule() {
 
+    }
+
+    @Override
+    public Observable<List<Bus>> getBusesResponse() {
+        return busesResponse;
     }
 }
