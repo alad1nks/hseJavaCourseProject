@@ -1,6 +1,30 @@
 package org.hse_app.model.entities;
 
 public final class Bus {
+    public String getDay() {
+        return day;
+    }
+
+    public Long getDayTime() {
+        return dayTime;
+    }
+
+    public String getDayTimeString() {
+        return dayTimeString;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getStation() {
+        return station;
+    }
+
     private final String day;
     private final Long dayTime;
     private final String dayTimeString;
