@@ -17,7 +17,7 @@ public class UseCase {
 
     public UseCase() {
         BusScheduleModelImpl busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);
-        Observable<ArrayList<Bus>> buses = busesRepository.getBusesResponse();
+        Observable<List<Bus>> buses = busesRepository.getBusesResponse();
         buses.subscribe(getBusesObserver());
 
     }

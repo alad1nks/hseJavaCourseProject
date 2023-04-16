@@ -42,7 +42,7 @@ public final class Bus {
 
     @Override
     public String toString() {
-        return "\nid:" + String.valueOf(id) + "\nday:" + String.valueOf(day) + "\ndayTime:" + String.valueOf(dayTime) +
+        return "\nid:" + id + "\nday:" + day + "\ndayTime:" + dayTime +
                 "\ndaytimeString:" + dayTimeString + "\ndirection:" + direction + "\nstation:" + station;
     }
 }

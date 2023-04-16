@@ -5,22 +5,18 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.ReplaySubject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BusScheduleController {
-    //private final BusScheduleModelImpl busesRepository;
-    String day;
-    String direction;
-    String station;
     public enum ValueLessSignal{
         IGNORE_ME;
     }
-    private final ReplaySubject<ValueLessSignal> refreshScheduleEmitter = ReplaySubject.<ValueLessSignal>create();
-    private final ReplaySubject<ArrayList<String>> requestScheduleEmitter = ReplaySubject.<ArrayList<String>>create();;
+    private final ReplaySubject<ValueLessSignal> refreshScheduleEmitter = ReplaySubject.create();
+    private final ReplaySubject<List<String>> requestScheduleEmitter = ReplaySubject.create();;
     public BusScheduleController() {
-        //busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);;
     }
 
-    public Observable<ArrayList<String>> getRequestScheduleEmitter() {
+    public Observable<List<String>> getRequestScheduleEmitter() {
         return requestScheduleEmitter;
     }
     public Observable<ValueLessSignal> getRefreshScheduleEmitter() {
