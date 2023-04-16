@@ -4,26 +4,24 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.ReplaySubject;
 import org.hse_app.ApplicationContextProvider;
 import org.hse_app.model.entities.Bus;
 import org.hse_app.model.repository.BusScheduleModelImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UseCase {
-    private BusScheduleModelImpl busesRepository;
     private final ReplaySubject<String> response = ReplaySubject.create();
 
     public UseCase() {
-        busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);
-        Observable<List<Bus>> buses = busesRepository.getBusesResponse();
+        BusScheduleModelImpl busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);
+        Observable<ArrayList<Bus>> buses = busesRepository.getBusesResponse();
         buses.subscribe(getBusesObserver());
 
     }
     public Observable<String> getBuses() {
-        System.out.println("getBuses");
         return response;
     }
 
@@ -36,7 +34,6 @@ public class UseCase {
 
             @Override
             public void onNext(@NonNull List<Bus> buses) {
-                System.out.println(buses);
                 response.onNext(buses.toString());
             }
 
@@ -50,6 +47,9 @@ public class UseCase {
                 System.out.println("useCaseOnComplete");
             }
         };
+    }
+    public void sendBusesToPresentation(ArrayList<Bus> buses){
+        System.out.println(buses);
     }
 
 

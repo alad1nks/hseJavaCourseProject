@@ -1,5 +1,6 @@
 package org.hse_app;
 
+import org.hse_app.controller.BusScheduleController;
 import org.hse_app.model.repository.BusScheduleModelImpl;
 import org.hse_app.presentation.BusSchedulePresentation;
 import org.hse_app.presentation.UseCase;
@@ -16,6 +17,9 @@ public class SpringConfig {
     public BusScheduleModelImpl BusesRepositoryImplSingleton() {
         return new BusScheduleModelImpl();
     }
+    @Bean
+    @Scope("singleton")
+    public BusScheduleController BusesScheduleControllerSingleton() {return new BusScheduleController();}
 
     @Bean
     @Scope("singleton")

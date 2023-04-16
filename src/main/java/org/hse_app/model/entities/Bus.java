@@ -42,6 +42,7 @@ public final class Bus {
 
     @Override
     public String toString() {
-        return "TODO";
+        return "\nid:" + String.valueOf(id) + "\nday:" + String.valueOf(day) + "\ndayTime:" + String.valueOf(dayTime) +
+                "\ndaytimeString:" + dayTimeString + "\ndirection:" + direction + "\nstation:" + station;
     }
 }

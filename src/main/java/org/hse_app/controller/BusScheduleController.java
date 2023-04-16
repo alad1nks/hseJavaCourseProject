@@ -1,20 +1,30 @@
 package org.hse_app.controller;
 
 
-import io.reactivex.rxjava3.subjects.BehaviorSubject;
-import io.reactivex.rxjava3.subjects.Subject;
-import org.hse_app.ApplicationContextProvider;
-import org.hse_app.model.repository.BusScheduleModelImpl;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.ReplaySubject;
 
 import java.util.ArrayList;
 
 public class BusScheduleController {
-    private final Subject<ArrayList<String>> requestScheduleEmitter;
-    private final BusScheduleModelImpl busesRepository;
+    //private final BusScheduleModelImpl busesRepository;
+    String day;
+    String direction;
+    String station;
+    public enum ValueLessSignal{
+        IGNORE_ME;
+    }
+    private final ReplaySubject<ValueLessSignal> refreshScheduleEmitter = ReplaySubject.<ValueLessSignal>create();
+    private final ReplaySubject<ArrayList<String>> requestScheduleEmitter = ReplaySubject.<ArrayList<String>>create();;
     public BusScheduleController() {
-        busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);
-        requestScheduleEmitter = BehaviorSubject.create();
-        requestScheduleEmitter.hide().subscribe(busesRepository.getOnRequestSchedule());
+        //busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);;
+    }
+
+    public Observable<ArrayList<String>> getRequestScheduleEmitter() {
+        return requestScheduleEmitter;
+    }
+    public Observable<ValueLessSignal> getRefreshScheduleEmitter() {
+        return refreshScheduleEmitter;
     }
     public void requestSchedule(String day, String direction, String station) {
         ArrayList<String> b = new ArrayList<>(3);
@@ -23,8 +33,8 @@ public class BusScheduleController {
         b.add(station);
         requestScheduleEmitter.onNext(b);
     }
-    private void refreshSchedule() {
-        busesRepository.refreshSchedule();
+    public void refreshSchedule() {
+        refreshScheduleEmitter.onNext(ValueLessSignal.IGNORE_ME);
     }
 
 }
