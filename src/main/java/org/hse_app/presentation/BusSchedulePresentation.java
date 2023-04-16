@@ -22,7 +22,7 @@ public class BusSchedulePresentation {
 
             @Override
             public void onNext(@NonNull String s) {
-                System.out.println(s);
+                presentData(s);
             }
 
             @Override
@@ -36,4 +36,7 @@ public class BusSchedulePresentation {
             }
         };
     }
-}
+    private void presentData(String s) {
+        System.out.println(s);
+    }
+ }

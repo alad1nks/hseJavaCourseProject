@@ -10,7 +10,7 @@ public class Application {
         AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(SpringConfig.class);
         BusScheduleController controller = ApplicationContextProvider.getApplicationContext().getBean("BusesScheduleControllerSingleton", BusScheduleController.class);
-        controller.requestSchedule("1", "msk", "odn");//tempuaryr ignored date
+        controller.requestSchedule("1", "msk", "odn");//temporary ignored date
         controller.refreshSchedule();
         applicationContext.close();
     }
