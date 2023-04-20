@@ -3,6 +3,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.subjects.ReplaySubject;
 import org.hse_app.ApplicationContextProvider;
 import org.hse_app.SpringConfig;
+import org.hse_app.controller.BusScheduleController;
 import org.hse_app.model.entities.Bus;
 import org.hse_app.model.repository.BusScheduleModelImpl;
 import org.hse_app.presentation.BusSchedulePresentation;
@@ -12,6 +13,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 
 public class BusModelTest {
 
@@ -62,5 +66,4 @@ public class BusModelTest {
         buses.test().hasSubscription();
         applicationContext.close();
     }
-
 }

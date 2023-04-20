@@ -34,7 +34,7 @@ public class UseCase {
 
             @Override
             public void onNext(@NonNull List<Bus> buses) {
-                response.onNext(buses.toString());
+                sendBusesToPresentation(buses);
             }
 
             @Override
@@ -48,8 +48,8 @@ public class UseCase {
             }
         };
     }
-    public void sendBusesToPresentation(ArrayList<Bus> buses){
-        System.out.println(buses);
+    public void sendBusesToPresentation(List<Bus> buses){
+        response.onNext(buses.toString());
     }
 
 

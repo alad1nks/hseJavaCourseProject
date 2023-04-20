@@ -16,17 +16,19 @@ public class DataBase {
     String DB_USERNAME = "postgres";
     String DB_PASSWORD = "postgres";
     String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
+    String DB_NAME = "bus_schedule";
 
     public DataBase() {
     }
 
     public void getBuses(List<String> params_day_direction_station) throws SQLException {
+        //generateDataForDB();
         int day = Integer.parseInt(params_day_direction_station.get(0));
         String direction = params_day_direction_station.get(1);
         String station = params_day_direction_station.get(2);
         Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         Statement statement = connection.createStatement();
-        String SQL_SELECT_BUSES = "select * from bus_schedule where day = " + day + " and direction = '" + direction + "' and station = '" + station + "'";
+        String SQL_SELECT_BUSES = "select * from " + DB_NAME + " where day = " + day + " and direction = '" + direction + "' and station = '" + station + "'";
         ResultSet resultSet = statement.executeQuery(SQL_SELECT_BUSES);
         ArrayList<Bus> buses = new ArrayList<>();
         while (resultSet.next()) {
@@ -43,5 +45,59 @@ public class DataBase {
 
     public Observable<List<Bus>> getBuseSchedule() {
         return busSchedule;
+    }
+
+
+    private void generateDataForDB() throws SQLException {
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);//add try catch or all command
+            Statement statement = connection.createStatement();
+            for (int i = 0; i < 4; ++i) {
+                for (int j = 0; j < 10; ++j) {
+                    int id = i * 10 + j;
+                    int day =  0;
+                    int dayTime = 0;
+                    String dayTimeString = "";
+                    String direction = "";
+                    String station = "";
+                    if (j < 5) {
+                        day = i + 1;
+                        dayTime = 3600 * j + 36000;
+                        Integer hours = new Integer(dayTime/3600);
+                        Integer minutes = new Integer((dayTime % 3600)/60);
+                        dayTimeString = String.format("%02d:%02d", hours, minutes);
+                        direction = "msk";
+                        if (j % 3 == 0) {
+                            station = "mid";
+                        } else if (j % 3 == 1) {
+                            station = "odn";
+                        } else  {
+                            station = "slv";
+                        }
+                    } else {
+                        day = i + 1;
+                        dayTime = 3600 * (j - 5) + 36000;
+                        Integer hours = new Integer(dayTime/3600);
+                        Integer minutes = new Integer((dayTime % 3600)/60);
+                        dayTimeString = String.format("%02d:%02d", hours, minutes);
+                        direction = "dbk";
+                        if (j % 3 == 0) {
+                            station = "mid";
+                        } else if (j % 3 == 1) {
+                            station = "odn";
+                        } else  {
+                            station = "slv";
+                        }
+                    }
+                    String SQL_INSERT_BUSES = "INSERT INTO " + DB_NAME + " VALUES (" + id + ", " + day + ", " + dayTime + ", '" + dayTimeString + "', '" +
+                            direction + "', '" + station + "')";
+                    statement.executeUpdate(SQL_INSERT_BUSES);
+                }
+            }
+        }
+        catch (Exception e){
+            System.err.println("Error");
+            System.err.println(e.getMessage());
+        }
     }
 }
