@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class BusModelTest {
 
     @Test
-    void CheckPresentationSubsribtion() {
+    void CheckPresentationSubscription() {
         AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(SpringConfig.class);
         BusSchedulePresentation presentation = ApplicationContextProvider.getApplicationContext().getBean("BusSchedulePresentationSingleton", BusSchedulePresentation.class);
@@ -40,7 +40,7 @@ public class BusModelTest {
     }
 
     @Test
-    void CheckModelSubsribtion() {
+    void CheckModelSubscription() {
         AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(SpringConfig.class);
         BusScheduleModelImpl model = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);

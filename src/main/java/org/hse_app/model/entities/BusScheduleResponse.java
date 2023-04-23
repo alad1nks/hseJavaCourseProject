@@ -1,7 +1,8 @@
 package org.hse_app.model.entities;
 
-import java.util.List;
+import lombok.Value;
 
+import java.util.List;
 public class BusScheduleResponse {
     Integer revision;
     List<Bus> buses;
