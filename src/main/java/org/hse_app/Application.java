@@ -8,7 +8,7 @@ public class Application {
         AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(SpringConfig.class);
         BusScheduleController controller = ApplicationContextProvider.getApplicationContext().getBean("BusesScheduleControllerSingleton", BusScheduleController.class);
-        controller.requestSchedule("1", "msk", "odn");
+        controller.requestSchedule("2", "msk", "odn");
         controller.refreshSchedule();
         applicationContext.close();
     }
