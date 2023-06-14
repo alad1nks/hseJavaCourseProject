@@ -9,9 +9,15 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "main", "Responses", "RxJava_temp" ]
+    branches:
+    - main
+    - Responses
+    - RxJava_temp
   pull_request:
-    branches: [ "main" , "Responses", "RxJava_temp"]
+    branches: 
+    - main
+    - Responses
+    - RxJava_temp
 
 permissions:
   contents: read
