@@ -15,7 +15,7 @@ services:
       timeout: 20s
       retries: 20
     ports:
-      - "5432:5432"
+      - "5432"
     command: postgres -p 5432
     volumes:
       - ./sqlScripts/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql
