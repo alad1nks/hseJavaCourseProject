@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import org.hse_app.controller.BusScheduleController;
 import org.hse_app.database.DataBase;
+import org.hse_app.model.entities.BusScheduleRequest;
 import org.hse_app.model.entities.BusScheduleResponse;
 
 import java.sql.SQLException;
@@ -28,8 +29,8 @@ public class BusScheduleModelImpl implements BusScheduleModel {
     }
 
     @Override
-    public void refreshSchedule() {
-
+    public void refreshSchedule(BusScheduleRequest busScheduleRequest) throws SQLException {
+        dataBase.updateBuses(busScheduleRequest.getBusSchedule());
     }
 
     @Override
@@ -46,7 +47,7 @@ public class BusScheduleModelImpl implements BusScheduleModel {
 
             @Override
             public void onNext(BusScheduleController.@NonNull ValueLessSignal valueLessSignal) {
-                refreshSchedule();
+//                refreshSchedule();
             }
 
             @Override

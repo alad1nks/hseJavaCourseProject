@@ -3,19 +3,20 @@ package org.hse_app.database;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.ReplaySubject;
 import org.hse_app.model.entities.Bus;
+import org.hse_app.model.entities.BusRequest;
 import org.hse_app.model.entities.BusScheduleResponse;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataBase {
     private final ReplaySubject<BusScheduleResponse> busScheduleResponse = ReplaySubject.create();
-    Integer REVISION = 1;
+    Integer BUS_REVISION = 1;
     String DB_USERNAME = "postgres";
     String DB_PASSWORD = "postgres";
     String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
-    String DB_NAME = "bus_schedule";
 
     public DataBase() {
     }
@@ -26,18 +27,50 @@ public class DataBase {
         String station = params_day_direction_station.get(2);
         Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         Statement statement = connection.createStatement();
-        String SQL_SELECT_BUSES = "select * from bus_schedule where day = " + day + " and direction = '" + direction + "' and station = '" + station + "'";
+        String SQL_SELECT_BUSES;
+        if (!Objects.equals(station, "all")) {
+            SQL_SELECT_BUSES = "select * from bus_schedule where day = " + day + " and direction = '" + direction + "' and station = '" + station + "'";
+        } else {
+            SQL_SELECT_BUSES = "select * from bus_schedule where day = " + day + " and direction = '" + direction + "'";
+        }
         ResultSet resultSet = statement.executeQuery(SQL_SELECT_BUSES);
         ArrayList<Bus> buses = new ArrayList<>();
         while (resultSet.next()) {
             buses.add(new Bus(resultSet.getInt("id"), resultSet.getInt("day"), resultSet.getLong("daytime"), resultSet.getString("daytimestring"), resultSet.getString("direction"), resultSet.getString("station")));
         }
-        busScheduleResponse.onNext(new BusScheduleResponse(REVISION, buses));
+        busScheduleResponse.onNext(new BusScheduleResponse(BUS_REVISION, buses));
     }
 
-    public void updateBuses() {
-        // TODO update db
-        ++REVISION;
+    public void updateBuses(List<BusRequest> busList) throws SQLException {
+        Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+        Statement statement = connection.createStatement();
+        String SQL_DELETE_BUSES = "DELETE FROM bus_schedule";
+        statement.executeUpdate(SQL_DELETE_BUSES);
+        for (int i = 0; i < busList.size(); ++i) {
+            BusRequest bus = busList.get(i);
+            int day = bus.getDay();
+            String dayTimeString;
+            String direction = bus.getDirection();
+            String timeString = bus.getDayTimeString();
+            String station;
+            if (timeString.length() == 5) {
+                dayTimeString = timeString;
+                station = "odn";
+            } else {
+                if (timeString.charAt(timeString.length() - 1) == '"') {
+                    station = "mld";
+                } else {
+                    station = "slv";
+                }
+                dayTimeString = timeString.substring(0, 5);
+            }
+            long dayTime = Long.parseLong(dayTimeString.substring(0, 2)) * 3600000 + Long.parseLong(dayTimeString.substring(3, 5)) * 60000;
+            String SQL_INSERT_BUSES = "INSERT INTO bus_schedule VALUES (" + i + ", " + day + ", " + dayTime + ", '" + dayTimeString + "', '" +
+                    direction + "', '" + station + "')";
+            System.out.println(SQL_INSERT_BUSES);
+            statement.executeUpdate(SQL_INSERT_BUSES);
+        }
+        ++BUS_REVISION;
     }
 
     public Observable<BusScheduleResponse> getBusSchedule() {
@@ -46,7 +79,7 @@ public class DataBase {
 
     private void generateDataForDB() throws SQLException {
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);//add try catch or all command
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             Statement statement = connection.createStatement();
             for (int i = 0; i < 4; ++i) {
                 for (int j = 0; j < 10; ++j) {
@@ -77,7 +110,7 @@ public class DataBase {
                     } else  {
                         station = "slv";
                     }
-                    String SQL_INSERT_BUSES = "INSERT INTO " + DB_NAME + " VALUES (" + id + ", " + day + ", " + dayTime + ", '" + dayTimeString + "', '" +
+                    String SQL_INSERT_BUSES = "INSERT INTO bus_schedule VALUES (" + id + ", " + day + ", " + dayTime + ", '" + dayTimeString + "', '" +
                             direction + "', '" + station + "')";
                     statement.executeUpdate(SQL_INSERT_BUSES);
                 }

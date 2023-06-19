@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.net.httpserver.HttpServer;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -14,11 +13,6 @@ import org.hse_app.ApplicationContextProvider;
 import org.hse_app.model.entities.BusScheduleResponse;
 import org.hse_app.model.repository.BusScheduleModelImpl;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.util.Arrays;
-
 public class BusSchedulePresentation {
     private final ReplaySubject<String> response = ReplaySubject.create();
 
@@ -26,7 +20,6 @@ public class BusSchedulePresentation {
         BusScheduleModelImpl busesRepository = ApplicationContextProvider.getApplicationContext().getBean("BusesRepositoryImplSingleton", BusScheduleModelImpl.class);
         Observable<BusScheduleResponse> buses = busesRepository.getBusesResponse();
         buses.subscribe(getBusesObserver());
-
     }
     public Observable<String> getBuses() {
         return response;
