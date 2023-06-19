@@ -35,7 +35,9 @@ public class BusScheduleController {
         Observable<String> buses = presentation.getBuses();
         buses.subscribe(getBusesObserver());
         int serverPort = 8000;
-        HttpServer server = HttpServer.create(new InetSocketAddress(serverPort), 0);
+        //System.out.println("CHECKING DOCKER 1");
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", serverPort), 0);
+        //System.out.println("CHECKING DOCKER 2");
         server.createContext("/api/buses", (exchange -> {
             if ("GET".equals(exchange.getRequestMethod())) {
                 Map<String, List<String>> params = splitQuery(exchange.getRequestURI().getRawQuery());
@@ -47,9 +49,13 @@ public class BusScheduleController {
                 String station = params.getOrDefault("station", List.of(noStationText)).stream().findFirst().orElse(noStationText);
                 try {
                     model.getBuses(List.of(day, direction, station));
+                    System.out.println("CHECKING DOCKER 1");
+
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("CHECKING DOCKER 2");
+
                 String respText = busResponse;
                 exchange.sendResponseHeaders(200, respText.getBytes().length);
                 OutputStream output = exchange.getResponseBody();

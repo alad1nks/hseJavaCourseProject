@@ -44,7 +44,7 @@ public class DataBase {
         return busScheduleResponse;
     }
 
-    private void generateDataForDB() throws SQLException {
+    private void generateDataForDB() {
         try {
             Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);//add try catch or all command
             Statement statement = connection.createStatement();

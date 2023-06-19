@@ -2,23 +2,27 @@ version: '3.9'
 
 services:
   database:
-    image: postgres
+    image: postgres:alpine
     restart: always
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
       PGUSER: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 1s
-      timeout: 5s
-      retries: 10
+      timeout: 20s
+      retries: 20
     ports:
       - "5432:5432"
     command: postgres -p 5432
     volumes:
-      - database:/var/lib/postgresql/data
+     - ./01-init.sql:/docker-entrypoint-initdb.d/01-init.sql
+     - ./02-populateDB.sql:/docker-entrypoint-initdb.d/02-populateDB.sql
+    # - ./data/pgsql:/var/lib/postgresql/data
+    #- ./db-data:/var/lib/postgresql/data
 
   hse_app:
     build:
@@ -34,9 +38,9 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_NAME: postgres
+      DB_NAME: bus_schedule
     ports:
       - "8000:8000"
-volumes:
-  database:
-    driver: local
+
+#volumes:
+#  db-data:

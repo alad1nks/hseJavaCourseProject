@@ -1,0 +1,1 @@
+INSERT INTO bus_schedule VALUES (1 ,1, 3000 , '3000', 'msk', 'mid');
