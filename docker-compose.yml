@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  database:
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGUSER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 20s
+      retries: 20
+    ports:
+      - "5432:5432"
+    command: postgres -p 5432
+    volumes:
+      - ./sqlScripts/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./sqlScripts/02-populateDB.sql:/docker-entrypoint-initdb.d/02-populateDB.sql
+      - postgres-data:/var/lib/postgresql/data
+
+  hse_app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DB_CONTAINER: database
+      DATASOURCE_URL: jdbc:postgresql://${DB_CONTAINER}:5432/postgres
+      DATASOURCE_NAME: postgres
+      DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8083:8083"
+
+volumes:
+  postgres-data:

@@ -40,7 +40,7 @@ public class BusScheduleController {
         BusSchedulePresentation busSchedulePresentation = ApplicationContextProvider.getApplicationContext().getBean("BusSchedulePresentationSingleton", BusSchedulePresentation.class);
         Observable<String> buses = busSchedulePresentation.getBuses();
         buses.subscribe(getBusesObserver());
-        int serverPort = 8000;
+        int serverPort = 8083;
         HttpServer server = HttpServer.create(new InetSocketAddress(serverPort), 0);
 
         server.createContext("/api/buses", (exchange -> {

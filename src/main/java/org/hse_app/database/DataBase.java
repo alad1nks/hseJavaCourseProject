@@ -16,7 +16,7 @@ public class DataBase {
     Integer BUS_REVISION = 1;
     String DB_USERNAME = "postgres";
     String DB_PASSWORD = "postgres";
-    String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
+    String DB_URL = "jdbc:postgresql://" + System.getenv("DB_CONTAINER") + ":5432/postgres";
 
     public DataBase() {
     }
