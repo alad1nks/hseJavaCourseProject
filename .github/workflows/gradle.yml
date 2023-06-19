@@ -39,7 +39,7 @@ jobs:
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
-        image: spoker28/hseApp
+        image: spoker28/hse-app
         tags: latest
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
