@@ -41,6 +41,29 @@ public class DataBase {
         busScheduleResponse.onNext(new BusScheduleResponse(BUS_REVISION, buses));
     }
 
+    public String getSQLUpdateCommand(BusRequest bus, int i) {
+        int day = bus.getDay();
+        String dayTimeString;
+        String direction = bus.getDirection();
+        String timeString = bus.getDayTimeString();
+        String station;
+        if (timeString.length() == 5) {
+            dayTimeString = timeString;
+            station = "odn";
+        } else {
+            if (timeString.charAt(timeString.length() - 1) == '"') {
+                station = "mld";
+            } else {
+                station = "slv";
+            }
+            dayTimeString = timeString.substring(0, 5);
+        }
+        long dayTime = Long.parseLong(dayTimeString.substring(0, 2)) * 3600000 + Long.parseLong(dayTimeString.substring(3, 5)) * 60000;
+        String SQL_INSERT_BUSES = "INSERT INTO bus_schedule VALUES (" + i + ", " + day + ", " + dayTime + ", '" + dayTimeString + "', '" +
+                direction + "', '" + station + "')";
+        return SQL_INSERT_BUSES;
+    }
+
     public void updateBuses(List<BusRequest> busList) throws SQLException {
         Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         Statement statement = connection.createStatement();
@@ -48,25 +71,7 @@ public class DataBase {
         statement.executeUpdate(SQL_DELETE_BUSES);
         for (int i = 0; i < busList.size(); ++i) {
             BusRequest bus = busList.get(i);
-            int day = bus.getDay();
-            String dayTimeString;
-            String direction = bus.getDirection();
-            String timeString = bus.getDayTimeString();
-            String station;
-            if (timeString.length() == 5) {
-                dayTimeString = timeString;
-                station = "odn";
-            } else {
-                if (timeString.charAt(timeString.length() - 1) == '"') {
-                    station = "mld";
-                } else {
-                    station = "slv";
-                }
-                dayTimeString = timeString.substring(0, 5);
-            }
-            long dayTime = Long.parseLong(dayTimeString.substring(0, 2)) * 3600000 + Long.parseLong(dayTimeString.substring(3, 5)) * 60000;
-            String SQL_INSERT_BUSES = "INSERT INTO bus_schedule VALUES (" + i + ", " + day + ", " + dayTime + ", '" + dayTimeString + "', '" +
-                    direction + "', '" + station + "')";
+            String SQL_INSERT_BUSES = getSQLUpdateCommand(bus, i);
             System.out.println(SQL_INSERT_BUSES);
             statement.executeUpdate(SQL_INSERT_BUSES);
         }
